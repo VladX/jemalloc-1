@@ -1,15 +1,15 @@
 /* Defined if __attribute__((...)) syntax is supported. */
-#undef JEMALLOC_HAVE_ATTR
+#cmakedefine JEMALLOC_HAVE_ATTR
 
 /* Support the experimental API. */
-#undef JEMALLOC_EXPERIMENTAL
+#cmakedefine JEMALLOC_EXPERIMENTAL
 
 /*
  * Define overrides for non-standard allocator-related functions if they are
  * present on the system.
  */
-#undef JEMALLOC_OVERRIDE_MEMALIGN
-#undef JEMALLOC_OVERRIDE_VALLOC
+#cmakedefine JEMALLOC_OVERRIDE_MEMALIGN
+#cmakedefine JEMALLOC_OVERRIDE_VALLOC
 
 /*
  * At least Linux omits the "const" in:
@@ -18,7 +18,7 @@
  *
  * Match the operating system's prototype.
  */
-#undef JEMALLOC_USABLE_SIZE_CONST
+#define JEMALLOC_USABLE_SIZE_CONST @JEMALLOC_USABLE_SIZE_CONST@
 
 /* sizeof(void *) == 2^LG_SIZEOF_PTR. */
-#undef LG_SIZEOF_PTR
+#define LG_SIZEOF_PTR @LG_SIZEOF_PTR@

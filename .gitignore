@@ -70,3 +70,16 @@ test/include/test/jemalloc_test_defs.h
 /test/unit/*.out
 
 /VERSION
+
+CMakeFiles
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+*.a
+*.lib
+*.o
+*.obj
+*.pdb
+test_*
+CTestTestfile.cmake
+Testing
