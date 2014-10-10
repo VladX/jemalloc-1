@@ -8,6 +8,12 @@
 #define	JEMALLOC_VERSION_NREV @jemalloc_version_nrev@
 #define	JEMALLOC_VERSION_GID "@jemalloc_version_gid@"
 
+#cmakedefine JEMALLOC_BUILTIN_FFS
+#ifdef JEMALLOC_BUILTIN_FFS
+#define ffs(x) __builtin_ffs(x)
+#define ffsl(x) __builtin_ffsl(x)
+#endif
+
 #  define MALLOCX_LG_ALIGN(la)	(la)
 #  if LG_SIZEOF_PTR == 2
 #    define MALLOCX_ALIGN(a)	(ffs(a)-1)
