@@ -77,6 +77,8 @@ Makefile
 cmake_install.cmake
 *.a
 *.lib
+*.dll*
+*.exp
 *.o
 *.obj
 *.pdb

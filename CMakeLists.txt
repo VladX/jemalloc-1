@@ -27,6 +27,7 @@ if(MSVC)
  set(CMAKE_C_FLAGS "")
  set(CMAKE_C_FLAGS_RELEASE "/MD /O2 /Z7")
  set(CMAKE_C_FLAGS_DEBUG "/MDd /Od /Zi")
+ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /FORCE /OPT:REF")
 endif(MSVC)
 
 set(JEMALLOC_C_SRCS
@@ -63,15 +64,18 @@ endif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 if(WIN32 OR MINGW)
  set(PLATFORM_EXE_SUFFIX ".exe")
  set(JEMALLOC_MUNMAP 1)
-endif(WIN32 OR MINGW)
-
-if (MINGW)
  set(JEMALLOC_LAZY_LOCK 1)
  message(STATUS "Enabling lazy lock to avoid startup issues")
-endif (MINGW)
+endif(WIN32 OR MINGW)
+
+include(CheckIncludeFiles)
 
 if(MSVC)
  include_directories(AFTER ${CMAKE_CURRENT_SOURCE_DIR}/include/msvc_compat)
+ check_include_files(inttypes.h HAVE_INTTYPES_H)
+ if(NOT HAVE_INTTYPES_H)
+  include_directories(AFTER ${CMAKE_CURRENT_SOURCE_DIR}/include/msvc_compat/C99)
+ endif(NOT HAVE_INTTYPES_H)
 endif(MSVC)
 
 macro(JEMALLOC_LG_SIZEOF CTYPE VARIABLE)
@@ -210,7 +214,12 @@ configure_file(include/jemalloc/internal/jemalloc_internal.h.in include/jemalloc
 configure_file(include/jemalloc/internal/jemalloc_internal_defs.h.in include/jemalloc/internal/jemalloc_internal_defs.h)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-add_library(jemalloc STATIC ${JEMALLOC_C_SRCS})
+
+if(MSVC)
+ add_library(jemalloc SHARED ${JEMALLOC_C_SRCS})
+else(MSVC)
+ add_library(jemalloc STATIC ${JEMALLOC_C_SRCS})
+endif(MSVC)
 
 enable_testing()
 add_executable(test_malloc tests/malloc.c)

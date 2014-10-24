@@ -1,10 +1,13 @@
-#include <strings.h>
 #ifdef _WIN32
 #include <windows.h>
 #else
 #include <unistd.h>
 #endif
 #include <stdio.h>
+
+int log_2(int x) {
+	return (x > 1) ? log_2(x / 2) + 1 : 0;
+}
 
 int main (int argc, char ** argv) {
 	int result;
@@ -19,7 +22,7 @@ int main (int argc, char ** argv) {
 	if (result == -1) {
 		return 1;
 	}
-	result = ffsl(result) - 1;
+	result = log_2(result);
 	fprintf(f, "%d\n", result);
 	fclose(f);
 	return 0;
